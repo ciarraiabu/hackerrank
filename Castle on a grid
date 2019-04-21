@@ -1,0 +1,135 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the minimumMoves function below.
+    static class Pair{
+       int x;
+       int y;
+       int pathCost;
+
+      Pair(int x,int y,int pathCost){
+    this.x=x;
+    this.y=y;
+    this.pathCost=pathCost;
+}
+    }
+    static int minimumMoves(String[] grid, int startX, int startY, int goalX, int goalY) {
+     Queue<Pair> queue=new LinkedList<Pair>();
+   int n=grid.length;
+
+   int[][] visited =new int[n][n];
+   queue.add(new Pair(startX,startY,0));
+
+   int minimumMoves=0;
+
+   while(!queue.isEmpty()){          
+
+       Pair currentNode=queue.remove();           
+       if(currentNode.x==goalX && currentNode.y==goalY){
+           minimumMoves=currentNode.pathCost;
+           break;
+       }
+
+       visited[currentNode.x][currentNode.y]=1;
+
+       /*add the children of current node to the queue.
+         When getting a list of neighbors for a cell, rather than getting only the immediate surrounding neighbors,
+         you can get all neighbors in the northern path           
+       */
+       int i=currentNode.x;
+       int j=currentNode.y;
+
+       //going north
+       i--;
+       while(i>=0 && i<n && j>=0 && j<n && grid[i].charAt(j)!='X' && visited[i][j]!=1 ){
+           queue.add(new Pair(i,j,currentNode.pathCost+1));
+            //dont do this. there can be multiple paths to same with different costs.             
+           //visited[i][j]=1;
+           i--;
+
+       }
+
+       //going south
+       i=currentNode.x;
+       i++;
+
+       while(i>=0 && i<n && j>=0 && j<n && grid[i].charAt(j)!='X' && visited[i][j]!=1 ){
+           queue.add(new Pair(i,j,currentNode.pathCost+1));               
+           i++;
+
+       }
+
+       //going west 
+        i=currentNode.x;
+        j=currentNode.y;
+
+        j++;
+
+        while(i>=0 && i<n && j>=0 && j<n && grid[i].charAt(j)!='X' && visited[i][j]!=1 ){
+           queue.add(new Pair(i,j,currentNode.pathCost+1));  
+           j++;
+
+       }
+
+       //going east
+        i=currentNode.x;
+        j=currentNode.y;
+
+        j--;
+
+        while(i>=0 && i<n && j>=0 && j<n && grid[i].charAt(j)!='X' && visited[i][j]!=1 ){
+           queue.add(new Pair(i,j,currentNode.pathCost+1));
+           j--;
+
+       } 
+   }        
+   return minimumMoves;
+
+
+
+    }
+    
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int n = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        String[] grid = new String[n];
+
+        for (int i = 0; i < n; i++) {
+            String gridItem = scanner.nextLine();
+            grid[i] = gridItem;
+        }
+
+        String[] startXStartY = scanner.nextLine().split(" ");
+
+        int startX = Integer.parseInt(startXStartY[0]);
+
+        int startY = Integer.parseInt(startXStartY[1]);
+
+        int goalX = Integer.parseInt(startXStartY[2]);
+
+        int goalY = Integer.parseInt(startXStartY[3]);
+
+        int result = minimumMoves(grid, startX, startY, goalX, goalY);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+   
+}
