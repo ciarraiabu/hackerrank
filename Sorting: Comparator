@@ -1,0 +1,13 @@
+class Checker implements Comparator<Player> 
+{
+    @Override
+    public int compare(Player x, Player y)
+    {
+ 
+            if(x.score != y.score)
+            {
+                return y.score-x.score;
+            }
+            return x.name.compareTo(y.name);
+        }
+    }
