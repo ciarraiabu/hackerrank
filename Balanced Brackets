@@ -1,0 +1,36 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    
+    public static boolean isBalanced(String expression) 
+    {
+        Stack<Character> sta=new Stack<>();
+        
+        for(int i=0; i<expression.length(); i++){
+            char next = expression.charAt(i);
+        if(next == '{')   sta.push('}');
+        else if(next == '[') sta.push(']');
+        else if(next == '(') sta.push(')');
+        else if(sta.empty() || sta.pop() != next) 
+        {
+            return false;
+        } 
+    }
+    return sta.empty();
+    }
+  
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for (int i = 0; i < t; i++) {
+            String expression = sc.next();
+            System.out.println( (isBalanced(expression)) ? "YES" : "NO" );
+        }
+    }
+}
+ 
